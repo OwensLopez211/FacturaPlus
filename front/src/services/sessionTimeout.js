@@ -1,7 +1,11 @@
 let logoutTimer;
+let currentLogoutCallback;
+let currentTimeout;
 
-const startSessionTimeout = (logoutCallback, timeout = 100) => {
-  // timeout: tiempo de inactividad en milisegundos (por defecto: 15 minutos = 900000ms)
+const startSessionTimeout = (logoutCallback, timeout = 10) => {
+  // Guardar referencias
+  currentLogoutCallback = logoutCallback;
+  currentTimeout = timeout;
 
   // Limpiar el temporizador previo
   if (logoutTimer) {
@@ -10,7 +14,7 @@ const startSessionTimeout = (logoutCallback, timeout = 100) => {
 
   // Configurar el temporizador
   logoutTimer = setTimeout(() => {
-    logoutCallback(); // Llama al callback para cerrar sesión
+    currentLogoutCallback(); // Llama al callback para cerrar sesión
   }, timeout);
 
   // Reiniciar el temporizador en eventos de actividad del usuario
@@ -22,7 +26,7 @@ const startSessionTimeout = (logoutCallback, timeout = 100) => {
 
 const resetTimeout = () => {
   clearTimeout(logoutTimer);
-  startSessionTimeout(logoutCallback, timeout); // Reinicia el temporizador
+  startSessionTimeout(currentLogoutCallback, currentTimeout); // Reinicia el temporizador
 };
 
 const stopSessionTimeout = () => {

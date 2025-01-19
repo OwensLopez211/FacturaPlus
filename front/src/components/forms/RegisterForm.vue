@@ -199,4 +199,4 @@ export default defineComponent({
 });
 </script>
 
-<style src="../assets/RegisterForm.css"></style>
+<style src="../../assets/css/RegisterForm.css"></style>

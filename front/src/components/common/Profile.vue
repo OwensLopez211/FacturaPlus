@@ -113,5 +113,5 @@
   };
   </script>
   
-  <style src="../assets/Profile.css" scoped></style>
+  <style src="../../assets/css/Profile.css" scoped></style>
   

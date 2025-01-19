@@ -8,47 +8,54 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    // Método para iniciar sesión
+    /**
+     * Manejar el inicio de sesión.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
-        // Validar los datos del formulario de inicio de sesión
+        // Validar las credenciales de inicio de sesión
         $request->validate([
-            'email' => 'required|email', // El email es obligatorio y debe ser válido
-            'password' => 'required|string|min:8', // La contraseña debe tener al menos 8 caracteres
-        ], [
-            // Mensajes personalizados para errores
-            'email.required' => 'El campo correo electrónico es obligatorio.',
-            'email.email' => 'Por favor, ingrese un correo válido.',
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
         // Intentar autenticar al usuario
-        if (Auth::attempt($request->only('email', 'password'))) {
-            $user = Auth::user(); // Usuario autenticado
-            $token = $user->createToken('auth_token')->plainTextToken; // Crear token de acceso
-
-            return response()->json([
-                'message' => 'Inicio de sesión exitoso',
-                'user' => $user,
-                'token' => $token,
-            ], 200); // Respuesta con estado 200 OK
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
 
-        // Respuesta para credenciales inválidas
+        // Obtener el usuario autenticado
+        $user = Auth::user();
+
+        // Crear un token de acceso para el usuario
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        // Determinar la redirección según el rol del usuario
+        $redirect = $user->roles->contains('nombre', 'admin') ? '/admin/dashboard' : '/dashboard';
+
+        // Retornar la respuesta con el token y los datos del usuario
         return response()->json([
-            'message' => 'Credenciales inválidas. Por favor, verifique sus datos.',
-        ], 401);
+            'message' => 'Inicio de sesión exitoso',
+            'user' => $user,
+            'token' => $token,
+            'redirect' => $redirect,
+        ], 200);
     }
 
-    // Método para cerrar sesión
+    /**
+     * Manejar el cierre de sesión.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function logout(Request $request)
     {
-        // Revocar el token actual del usuario
+        // Revocar el token de acceso actual
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Cierre de sesión exitoso',
-        ], 200);
+        return response()->json(['message' => 'Cierre de sesión exitoso'], 200);
     }
 }

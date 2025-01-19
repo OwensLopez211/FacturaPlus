@@ -9,7 +9,7 @@
   </template>
   
   <script>
-  import HeaderBar from "./components/layout/HeaderBar.vue"; // Importa tu HeaderBar
+  import HeaderBar from "./components/common/HeaderBar.vue"; // Importa tu HeaderBar
   
   export default {
     name: "App",

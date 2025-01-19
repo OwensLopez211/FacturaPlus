@@ -52,7 +52,7 @@
   
   <script>
   import { defineComponent, onMounted } from "vue";
-  import WeeklySummary from "../components/WeeklySummary.vue";
+  import WeeklySummary from "./WeeklySummary.vue";
   import { renderCharts } from '../../assets/js/Dashboard.js';
   
   export default defineComponent({
@@ -68,5 +68,5 @@
   });
   </script>
   
-  <style src="../assets/Dashboard.css" scoped></style>
+  <style src="../../assets/css/Dashboard.css" scoped></style>
   

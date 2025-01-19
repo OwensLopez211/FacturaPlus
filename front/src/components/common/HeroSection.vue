@@ -4,26 +4,27 @@
     <div class="text-center max-w-6xl hero-container">
       <!-- Título -->
       <h1 class="text-6xl font-extrabold text-gray-900 mb-10">
-        Guías personalizadas para estudiantes
+        Gestión Integral para tu Negocio
       </h1>
 
       <!-- Descripción -->
       <p class="text-xl text-gray-700 mb-12">
-        Descubre recursos educativos, aprende de la comunidad y organiza tu aprendizaje con las mejores recomendaciones personalizadas. Todo al alcance de tu mano.
+        Administra tu inventario, genera órdenes de compra, controla facturas y optimiza todos los procesos de tu empresa desde una plataforma completa diseñada para potenciar tu eficiencia. Todo al alcance de tu mano.
       </p>
 
       <!-- Botones -->
       <div class="flex justify-center gap-8">
         <!-- Botón de Registrarse -->
-        <div class="uiverse-register" @click="goToRegister">
-          <span class="tooltip-register">Regístrate ahora</span>
-          <span>Registrarse</span>
-        </div>
+        
 
         <!-- Botón de Iniciar Sesión -->
-        <div class="uiverse" @click="goToLogin">
-          <span class="tooltip">Sé de los nuestros</span>
+        <div class="uiverse-register" @click="goToRegister">
+          <span class="tooltip-register">¡Sé de los nuestros!</span>
           <span>¡Únete!</span>
+        </div>
+        <div class="uiverse" @click="goToLogin">
+          <span class="tooltip">Ya eres cliente</span>
+          <span>Iniciar sesión</span>
         </div>
       </div>
     </div>
@@ -32,7 +33,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import "../assets/UiverseButton.css"; // Importamos los estilos del botón
+import "../../assets/css/UiverseButton.css"; // Importamos los estilos del botón
 
 export default defineComponent({
   name: "HeroSection",

@@ -1,24 +1,25 @@
 <template>
   <div>
-    <!-- Navbar visible siempre -->
-    <Navbar />
+    <!-- Sidebar visible siempre -->
+    <Sidebar />
 
     <!-- Contenedor para las vistas -->
-    <div class="bg-gray-50 min-h-screen ">
+    <div class="bg-gray-50 min-h-screen ml-64">
+      <!-- Añadir margen izquierdo para acomodar el ancho del Sidebar -->
       <router-view /> <!-- Carga el componente correspondiente a la ruta activa -->
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from "../components/layout/Navbar.vue";
+import Sidebar from "../components/common/Sidebar.vue"; // Cambiado para que coincida con el uso en el template
 import { startSessionTimeout, stopSessionTimeout } from "../services/sessionTimeout";
 import { useRouter } from "vue-router";
 
 export default {
   name: "PrivateLayout",
   components: {
-    Navbar,
+    Sidebar, // Asegúrate de que el nombre coincida
   },
   setup() {
     const router = useRouter();
@@ -44,5 +45,9 @@ export default {
 /* Ajustes específicos */
 .pt-16 {
   padding-top: 4rem; /* Altura suficiente para el Navbar */
+}
+
+.ml-64 {
+  margin-left: 16rem; /* Asegura que el contenido no se sobreponga al Sidebar */
 }
 </style>

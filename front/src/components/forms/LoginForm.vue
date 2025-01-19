@@ -89,32 +89,42 @@
       const handleLogin = async () => {
         error.value = null;
         success.value = null;
-  
+
         try {
-            const response = await fetch("http://localhost:8000/api/login", {
+          const response = await fetch("http://localhost:8000/api/login", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ email: email.value, password: password.value }),
-            });
-  
-            if (!response.ok) {
+          });
+
+          if (!response.ok) {
             const data = await response.json();
             throw new Error(data.message || "Error en el inicio de sesión");
-            }
-  
-            const data = await response.json();
-            localStorage.setItem("authToken", data.token); // Guardar token
-            localStorage.setItem("userId", data.user.id); // Guardar ID del usuario si es necesario
-            success.value = "Inicio de sesión exitoso. Redirigiendo...";
-            setTimeout(() => {
-            router.push("/dashboard"); // Redirigir al perfil
-            }, 2000);
+          }
+
+          const data = await response.json();
+
+          // Guardar el token y otros datos en el almacenamiento local
+          localStorage.setItem("authToken", data.token);
+          localStorage.setItem("userId", data.user.id);
+          localStorage.setItem("userRole", data.user.roles[0]?.nombre || "user");
+
+          success.value = "Inicio de sesión exitoso. Redirigiendo...";
+
+          // Redirigir basado en el rol del usuario
+          const userRole = data.user.roles[0]?.nombre || "user"; // Asume que `roles` es un array
+          if (userRole === "admin") {
+            router.push("/admin/dashboard");
+          } else {
+            router.push("/dashboard");
+          }
         } catch (err: any) {
-            error.value = err.message || "Error al conectar con el servidor";
+          error.value = err.message || "Error al conectar con el servidor";
         }
-    };
+      };
+
   
       return {
         email,
@@ -127,5 +137,5 @@
   });
   </script>
   
-  <style src="../assets/LoginForm.css" scoped></style>
+  <style src="../../assets/css/LoginForm.css" scoped></style>
   
